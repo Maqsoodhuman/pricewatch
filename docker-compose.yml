@@ -1,0 +1,49 @@
+  # ── n8n: Workflow Orchestrator ──
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: pricewatch-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      - GENERIC_TIMEZONE=America/New_York
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - ./data/n8n:/home/node/.n8n
+    networks:
+      - pricewatch-net
+
+  # ── ChromaDB: Vector Database ──
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: pricewatch-chromadb
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/chromadb:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+    networks:
+      - pricewatch-net
+
+  # ── Scraper Service: Playwright API ──
+  scraper-service:
+    build:
+      context: ./scraper-service
+      dockerfile: Dockerfile
+    container_name: pricewatch-scraper
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - pricewatch-net
+
+networks:
+  pricewatch-net:
+    driver: bridge
