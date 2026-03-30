@@ -4,7 +4,7 @@
 
 A self-hosted "digital coworker" that monitors Amazon product prices, analyzes trends using AI, stores historical data in a vector database, and sends smart email alerts when prices drop. Includes a live dashboard for tracking and adding products.
 
-[https://github.com/user-attachments/assets/YOUR_VIDEO_ID_HERE](https://www.youtube.com/watch?v=n9t01whqB6M)
+[Demo Link](https://www.youtube.com/watch?v=n9t01whqB6M)
 
 ## Architecture
 
